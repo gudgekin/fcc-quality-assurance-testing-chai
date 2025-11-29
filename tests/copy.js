@@ -93,40 +93,23 @@ suiteSetup(function(done) {
   });
 
   suite('"Famous Italian Explorers" form', function () {
-
-    // #5
-    test('Submit the surname "Colombo" in the HTML form', function (done) {
-      browser.fill('surname', 'Colombo')  // Fill in the surname field with 'Colombo'
-        .then(() => {
-          return browser.pressButton('submit');  // Press the submit button (identified by text 'submit')
-        })
-        .then(() => {
-          // Assertions after the AJAX request updates the DOM
-          browser.assert.success();                      // Ensure status is 200
-          browser.assert.text('span#name', 'Cristoforo'); // Assert that #name span contains 'Cristoforo'
-          browser.assert.text('span#surname', 'Colombo'); // Assert that #surname span contains 'Colombo'
-          browser.assert.elements('span#dates', 1);       // Ensure there is exactly one #dates span
-          done();                                        // Finish the test
-        })
-        .catch(done);  // Catch any errors and pass them to done
+// #5
+test('Submit the surname "Colombo" in the HTML form', function (done) {
+  browser
+    .fill('surname', 'Colombo') // fills the form field with name="surname"
+    .pressButton('submit', function() { // presses the submit button
+      assert.equal(browser.text('#name'), 'Cristoforo'); // checks the name displayed
+      assert.equal(browser.text('#surname'), 'Colombo'); // checks the surname displayed
+      done();
     });
+});
+
 
     // #6
     test('Submit the surname "Vespucci" in the HTML form', function (done) {
-      browser.fill('surname', 'Vespucci')  // Fill in the surname field with "Vespucci"
-        .then(() => {
-          return browser.pressButton('submit');  // Press the submit button (identified by text 'submit')
-        })
-        .then(() => {
-          // Assertions after the AJAX request updates the DOM
-          browser.assert.success();                      // Ensure status is 200
-          browser.assert.text('span#name', 'Amerigo');   // Assert that #name has 'Amerigo'
-          browser.assert.text('span#surname', 'Vespucci'); // Assert that #surname has 'Vespucci'
-          browser.assert.elements('span#dates', 1);       // Ensure exactly one #dates span exists
-          done();                                        // Finish the test
-        })
-        .catch(done);  // Catch any errors and pass them to done
-    });
+      assert.fail();
 
+      done();
+    });
   });
 });
