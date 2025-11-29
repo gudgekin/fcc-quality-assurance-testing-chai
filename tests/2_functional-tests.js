@@ -33,21 +33,22 @@ suite('Functional Tests', function () {
           done();
         });
     });
-    // #3
-    test('Send {surname: "Colombo"}', function (done) {
-      chai
-        .request(server)
-        .keepOpen()
-        .put('/travellers')
-        .send({surname: 'Colombo'})
-        .end(function (err, res) {
-          assert.equal(res.status, 200);
-          assert.equal(res.body.name, 'Cristoforo');
-          assert.equal(res.body.surname, 'Colombo');
-      done();
-          done();
-        });
+    
+// #3
+test('Send {surname: "Colombo"}', function(done) {
+  chai
+    .request(server)
+    .keepOpen()
+    .put('/travellers')          // PUT request to /travellers
+    .send({ surname: 'Colombo' }) // Send the JSON body
+    .end(function(err, res) {
+      assert.equal(res.status, 200, 'Response status should be 200');
+      assert.equal(res.body.name, 'Cristoforo', 'First name should be Cristoforo');
+      assert.equal(res.body.surname, 'Colombo', 'Surname should be Colombo');
+      done(); // Signals that the async test is complete
     });
+});
+
     // #4
     test('Send {surname: "da Verrazzano"}', function (done) {
       assert.fail();
