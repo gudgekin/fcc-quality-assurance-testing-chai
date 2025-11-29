@@ -72,9 +72,18 @@ test('Send {surname: "da Verrazzano"}', function(done) {
 
 const Browser = require('zombie');
 
+// Step 1: set the URL of your site
+Browser.site = 'https://fcc-quality-assurance-testing-chai.onrender.com';
+
+const browser = new Browser();
+
+
 suite('Functional Tests with Zombie.js', function () {
   this.timeout(5000);
 
+suiteSetup(function(done) {
+  return browser.visit('/', done);
+});
 
 
   suite('Headless browser', function () {
@@ -84,12 +93,18 @@ suite('Functional Tests with Zombie.js', function () {
   });
 
   suite('"Famous Italian Explorers" form', function () {
-    // #5
-    test('Submit the surname "Colombo" in the HTML form', function (done) {
-      assert.fail();
-
+// #5
+test('Submit the surname "Colombo" in the HTML form', function (done) {
+  browser
+    .fill('surname', 'Colombo') // fills the form field with name="surname"
+    .pressButton('submit', function() { // presses the submit button
+      assert.equal(browser.text('#name'), 'Cristoforo'); // checks the name displayed
+      assert.equal(browser.text('#surname'), 'Colombo'); // checks the surname displayed
       done();
     });
+});
+
+
     // #6
     test('Submit the surname "Vespucci" in the HTML form', function (done) {
       assert.fail();
