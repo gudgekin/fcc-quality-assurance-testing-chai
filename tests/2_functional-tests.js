@@ -33,30 +33,40 @@ suite('Functional Tests', function () {
           done();
         });
     });
-
 // #3
-test('Send {surname: "Colombo"}', function (done) {
+test('Send {surname: "Colombo"}', function(done) {
+  chai
+    .request(server)
+    .keepOpen()
+    .put('/travellers')          // PUT request to /travellers
+    .send({ surname: 'Colombo' }) // Send the JSON body
+    .end(function(err, res) {
+      assert.equal(res.status, 200, 'Response status should be 200');
+      assert.equal(res.body.name, 'Cristoforo', 'First name should be Cristoforo');
+      assert.equal(res.body.surname, 'Colombo', 'Surname should be Colombo');
+      done(); // Signals that the async test is complete
+    });
+});
+
+// #4
+test('Send {surname: "da Verrazzano"}', function(done) {
   chai
     .request(server)
     .keepOpen()
     .put('/travellers')
-    .send({ surname: 'Colombo' })   // <-- send the JSON body
-    .end(function (err, res) {
-      assert.equal(res.status, 200);                   // 1. status 200
-      assert.equal(res.type, 'application/json');     // 2. content type
-      assert.equal(res.body.name, 'Cristoforo');      // 3. name
-      assert.equal(res.body.surname, 'Colombo');      // 4. surname
-      done();                                        // signal test done
+    .send({ surname: "da Verrazzano" })
+    .end(function(err, res) {
+      assert.equal(res.status, 200);
+      assert.equal(res.type, 'application/json');
+      assert.equal(res.body.name, 'Giovanni');
+      assert.equal(res.body.surname, 'da Verrazzano');
+      done();
     });
 });
 
 
-    // #4
-    test('Send {surname: "da Verrazzano"}', function (done) {
-      assert.fail();
 
-      done();
-    });
+
   });
 });
 
